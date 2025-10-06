@@ -1,6 +1,8 @@
 package api;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -247,7 +249,7 @@ public class MongoGradeDataBase implements GradeDataBase {
     }
 
     @Override
-    // TODO Task 3b: Implement this method
+    // TODONE Task 3b: Implement this method
     //       Hint: Read the Grade API documentation for getMyTeam (link below) and refer to the above similar
     //             methods to help you write this code (copy-and-paste + edit as needed).
     //             https://www.postman.com/cloudy-astronaut-813156/csc207-grade-apis-demo/folder/isr2ymn/get-my-team
@@ -261,13 +263,26 @@ public class MongoGradeDataBase implements GradeDataBase {
                 .addHeader(CONTENT_TYPE, APPLICATION_JSON)
                 .build();
 
-        final Response response;
-        final JSONObject responseBody;
+        try {
+            final Response response = client.newCall(request).execute();
+            final JSONObject responseBody = new JSONObject(response.body().string());
+            JSONObject team = responseBody.getJSONObject("team");
+            String name = team.getString("name");
+            JSONArray members = team.getJSONArray("members");
+            Team.TeamBuilder builder = Team.builder();
+            builder = builder.name(name);
+            String[] memberStr = new String[members.length()];
+            for(int i = 0; i < members.length(); i++){
+                memberStr[i] = members.getString(i);
+            }
+            builder = builder.members(memberStr);
+            return builder.build();
 
-        // TODO Task 3b: Implement the logic to get the team information
-        // HINT 1: Look at the formTeam method to get an idea on how to parse the response
-        // HINT 2: You may find it useful to just initially print the contents of the JSON
-        //         then work on the details of how to parse it.
-        return null;
+
+
+        }
+        catch (IOException | JSONException event) {
+            throw new RuntimeException(event);
+        }
     }
 }
