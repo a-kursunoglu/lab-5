@@ -17,7 +17,6 @@ public class GetToken {
         String gradeAPISignUpURL = "https://grade-apis.panchen.ca/signUp?username=jadensbigbutt";
         // TODO Task 1: use the run method to get your Grade API token (or obtain your token through a web browser).
 
-=======
         String response = "{\n" +
                 "  \"environment_variables\": \"token=x9Cyl1o3teSYu6wGjKW8u7VoC6TeyrA6\",\n" +
                 "  \"message\": \"User signed up successfully. Please copy and paste the environment_variables into your intelij java running environment variables.\",\n" +
